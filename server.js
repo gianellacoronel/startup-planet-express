@@ -1,12 +1,64 @@
 import express from "express";
 import { startups } from "./data/data.js";
 
-const PORT = 1234;
+const PORT = 8000;
 
 const app = express();
 
 app.get("/api", (req, res) => {
-  res.json(startups);
+  let filteredData = startups;
+  /*
+  Challenge:
+  1. When a user hits the /api endpoint with query params, filter the data so
+  we only serve objects that meet their requirements.
+
+  The user can filter by the following properties:
+    industry, country, continent, is_seeking_funding, has_mvp
+
+  Test Cases
+
+  /api?industry=renewable%20energy&country=germany&has_mvp=true
+    Should get the "GreenGrid Energy" object.
+
+  /api?industry=renewable%20energy&country=germany&has_mvp=false
+    Should not get any object
+
+  /api?continent=asia&is_seeking_funding=true&has_mvp=true
+    should get for objects with IDs 3, 22, 26, 29
+  */
+  const { industry, country, continent, is_seeking_funding, has_mvp } =
+    req.query;
+
+  if (industry) {
+    filteredData = filteredData.filter(
+      (data) => data.industry.toLowerCase() === industry.toLowerCase(),
+    );
+  }
+
+  if (country) {
+    filteredData = filteredData.filter(
+      (data) => data.country.toLowerCase() === country.toLowerCase(),
+    );
+  }
+  if (continent) {
+    filteredData = filteredData.filter(
+      (data) => data.continent.toLowerCase() === continent.toLowerCase(),
+    );
+  }
+  if (is_seeking_funding) {
+    filteredData = filteredData.filter(
+      (data) =>
+        data.is_seeking_funding ===
+        JSON.parse(is_seeking_funding.toLowerCase()),
+    );
+  }
+  if (has_mvp) {
+    filteredData = filteredData.filter(
+      (data) => data.has_mvp === JSON.parse(has_mvp.toLowerCase()),
+    );
+  }
+
+  res.json(filteredData);
 });
 
-app.listen(PORT, () => `Server listening on port ${8000}`);
+app.listen(PORT, () => console.log(`Server listening on port ${8000}`));
