@@ -45,36 +45,28 @@ app.get("/api", (req, res) => {
 
 /*
 Challenge:
-1. Add a new route which accepts GET requests to /api/<field>/<term>.
-2. Filter the data based on the path params.
-3. Serve the filtered data.
-
-For now, don’t worry that using some fields will trigger an error.
-
-** The functionality **
-Get all startups in a given country via api/country/<country name>
-Get all startups in a given continent via api/continent/<continent name>
-Get all startups in a given industry via api/industry/<industry name>
-
-**Test Cases**
-
-These should work:
-  api/country/india
-  api/continent/europe
-  api/industry/ai
-
-This will throw an error - but that's fine!
-	api/has_mvp/true
+1. If the client’s 'field' is not supported, serve this object:
+  {message: "Search field not allowed. Please use only 'country', 'continent', 'industry'" }
+2. Chain in the .status(<code>) method to set a status code.
+	What status code should you set?
+3. You might run into an error! Find a solution!
 
 */
-
 app.get("/api/:field/:term", (req, res) => {
   const { field, term } = req.params;
+  const allowedFields = ["country", "continent", "industry"];
+
+  if (!allowedFields.includes(field.toLowerCase())) {
+    return res.status(400).json({
+      message:
+        "Search field not allowed. Please use only 'country', 'continent', 'industry'",
+    });
+  }
+
   const filterData = startups.filter(
     (startup) => startup[field].toLowerCase() === term.toLowerCase(),
   );
-
-  res.json(filterData);
+  return res.status(200).json(filterData);
 });
 
 app.listen(PORT, () => console.log(`Server listening on port ${8000}`));
