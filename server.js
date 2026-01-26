@@ -7,25 +7,7 @@ const app = express();
 
 app.get("/api", (req, res) => {
   let filteredData = startups;
-  /*
-  Challenge:
-  1. When a user hits the /api endpoint with query params, filter the data so
-  we only serve objects that meet their requirements.
 
-  The user can filter by the following properties:
-    industry, country, continent, is_seeking_funding, has_mvp
-
-  Test Cases
-
-  /api?industry=renewable%20energy&country=germany&has_mvp=true
-    Should get the "GreenGrid Energy" object.
-
-  /api?industry=renewable%20energy&country=germany&has_mvp=false
-    Should not get any object
-
-  /api?continent=asia&is_seeking_funding=true&has_mvp=true
-    should get for objects with IDs 3, 22, 26, 29
-  */
   const { industry, country, continent, is_seeking_funding, has_mvp } =
     req.query;
 
@@ -59,6 +41,40 @@ app.get("/api", (req, res) => {
   }
 
   res.json(filteredData);
+});
+
+/*
+Challenge:
+1. Add a new route which accepts GET requests to /api/<field>/<term>.
+2. Filter the data based on the path params.
+3. Serve the filtered data.
+
+For now, don’t worry that using some fields will trigger an error.
+
+** The functionality **
+Get all startups in a given country via api/country/<country name>
+Get all startups in a given continent via api/continent/<continent name>
+Get all startups in a given industry via api/industry/<industry name>
+
+**Test Cases**
+
+These should work:
+  api/country/india
+  api/continent/europe
+  api/industry/ai
+
+This will throw an error - but that's fine!
+	api/has_mvp/true
+
+*/
+
+app.get("/api/:field/:term", (req, res) => {
+  const { field, term } = req.params;
+  const filterData = startups.filter(
+    (startup) => startup[field].toLowerCase() === term.toLowerCase(),
+  );
+
+  res.json(filterData);
 });
 
 app.listen(PORT, () => console.log(`Server listening on port ${8000}`));
