@@ -1,5 +1,6 @@
 import express from "express";
 import { apiRouter } from "./routes/apiRoutes.js";
+import cors from "cors";
 
 /*
 Challenge:
@@ -17,6 +18,7 @@ const PORT = 8000;
 
 const app = express();
 
+app.use(cors()); // This allows everyone to use the API
 app.use("/api", apiRouter);
 
 app.use((req, res) => {

@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/gianellacoronel/startup-planet-express#readme",
   "dependencies": {
+    "cors": "^2.8.6",
     "express": "^5.2.1"
   }
 }
