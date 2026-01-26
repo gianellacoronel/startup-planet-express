@@ -1,0 +1,23 @@
+{
+  "name": "startup_planet",
+  "version": "1.0.0",
+  "description": "a dataset of the world's most promising startups",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gianellacoronel/startup-planet-express.git"
+  },
+  "author": "Gianella Coronel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gianellacoronel/startup-planet-express/issues"
+  },
+  "homepage": "https://github.com/gianellacoronel/startup-planet-express#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
