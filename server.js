@@ -18,8 +18,8 @@ const PORT = 8000;
 
 const app = express();
 
-app.use(cors()); // This allows everyone to use the API
-app.use("/api", apiRouter);
+app.use(cors()); // This allows everyone to use the API //3rd Party Middleware
+app.use("/api", apiRouter); //Built-in  Middleware
 
 app.use((req, res) => {
   res.status(404).json({
